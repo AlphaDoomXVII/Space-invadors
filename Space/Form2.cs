@@ -3,21 +3,25 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
+using System.Media;
+using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Space_Invaders_Style_Game_MOO_ICT
+namespace Space
 {
     public partial class Form2 : Form
     {
 
         bool goLeft, goRight;
         int playerSpeed = 12;
-        int enemySpeed = 5;
+        int enemySpeed = 20;
         int score = 0;
-        int enemyBulletTimer = 300;
+        int enemyBulletTimer = -40;
 
         PictureBox[] sadInvadersArray;
 
@@ -57,17 +61,22 @@ namespace Space_Invaders_Style_Game_MOO_ICT
 
                 if (x is PictureBox && (string)x.Tag == "sadInvaders")
                 {
-                    x.Left += enemySpeed;
+                    // x.Left = new Random().Next(10, 550);
+                    x.Top += enemySpeed;
 
-                    if (x.Left > 730)
+                    if (x.Top > 620) // 620
                     {
-                        x.Top += 65;
-                        x.Left = -80;
+                        
+                        x.Top = -80;
                     }
 
 
                     if (x.Bounds.IntersectsWith(player.Bounds))
                     {
+                        using (var soundPlayer2 = new SoundPlayer(@"C:\Users\camie\source\repos\AlphaDoomXVII\Space-invadors\Space\Resources\muffled-distant-explosion-7104.wav"))
+                        {
+                            soundPlayer2.Play();
+                        }
                         gameOver("You've been invaded by the sad invaders, you are now sad!");
                     }
 
@@ -77,6 +86,10 @@ namespace Space_Invaders_Style_Game_MOO_ICT
                         {
                             if (y.Bounds.IntersectsWith(x.Bounds))
                             {
+                                using (var soundPlayer1 = new SoundPlayer(@"C:\Users\camie\source\repos\AlphaDoomXVII\Space-invadors\Space\Resources\muffled-distant-explosion-7104.wav"))
+                                {
+                                    soundPlayer1.Play();
+                                }
                                 this.Controls.Remove(x);
                                 this.Controls.Remove(y);
                                 score += 1;
@@ -100,7 +113,7 @@ namespace Space_Invaders_Style_Game_MOO_ICT
                 if (x is PictureBox && (string)x.Tag == "sadBullet")
                 {
 
-                    x.Top += 20;
+                    x.Top += 25;
 
                     if (x.Top > 620)
                     {
@@ -110,18 +123,18 @@ namespace Space_Invaders_Style_Game_MOO_ICT
                     if (x.Bounds.IntersectsWith(player.Bounds))
                     {
                         this.Controls.Remove(x);
-                        // gameOver("You've been killed by the sad bullet. Now you are sad forever!");
+                        gameOver("You've been killed by the sad bullet. Now you are sad forever!");
                     }
 
                 }
             }
 
-            if (score > 8)
+            if (score > 20)
             {
-                enemySpeed = 12;
+                enemySpeed = 2;
             }
 
-            if (score == sadInvadersArray.Length)
+            if (score == sadInvadersArray.Length * 3)
             {
                 gameOver("Woohoo Happiness Found, Keep it safe!");
             }
@@ -151,6 +164,10 @@ namespace Space_Invaders_Style_Game_MOO_ICT
             }
             if (e.KeyCode == Keys.Space && shooting == false)
             {
+                using (var soundPlayer3 = new SoundPlayer(@"C:\Users\camie\source\repos\AlphaDoomXVII\Space-invadors\Space\Resources\072816_heavy-machine-gun-50-caliber-28293.wav"))
+                {
+                    soundPlayer3.Play();
+                }
                 shooting = true;
                 makeBullet("bullet");
             }
@@ -165,21 +182,63 @@ namespace Space_Invaders_Style_Game_MOO_ICT
         private void makeInvaders()
         {
 
-            sadInvadersArray = new PictureBox[50];
+            sadInvadersArray = new PictureBox[10];
 
-            int left = 0;
+            int Left = 0;
+            
 
             for (int i = 0; i < sadInvadersArray.Length; i++)
             {
+
                 sadInvadersArray[i] = new PictureBox();
                 sadInvadersArray[i].Size = new Size(60, 50);
                 sadInvadersArray[i].Image = Space.Properties.Resources.sadFace;
-                sadInvadersArray[i].Top = 5;
+                sadInvadersArray[i].Left = 10;
                 sadInvadersArray[i].Tag = "sadInvaders";
-                sadInvadersArray[i].Left = left;
+                sadInvadersArray[i].Left = Left;
                 sadInvadersArray[i].SizeMode = PictureBoxSizeMode.StretchImage;
                 this.Controls.Add(sadInvadersArray[i]);
-                left = left - 80;
+                Left = Left + 75;
+
+            }
+
+            sadInvadersArray = new PictureBox[10];
+
+            Left = 0;
+
+            for (int i = 0; i < sadInvadersArray.Length; i++)
+            {
+
+                sadInvadersArray[i] = new PictureBox();
+                sadInvadersArray[i].Size = new Size(60, 50);
+                sadInvadersArray[i].Image = Space.Properties.Resources.sadFace;
+                sadInvadersArray[i].Left = 10;
+                sadInvadersArray[i].Top = -80;
+                sadInvadersArray[i].Tag = "sadInvaders";
+                sadInvadersArray[i].Left = Left;
+                sadInvadersArray[i].SizeMode = PictureBoxSizeMode.StretchImage;
+                this.Controls.Add(sadInvadersArray[i]);
+                Left = Left + 75;
+
+            }
+
+            sadInvadersArray = new PictureBox[10];
+
+            Left = 0;
+
+            for (int i = 0; i < sadInvadersArray.Length; i++)
+            {
+
+                sadInvadersArray[i] = new PictureBox();
+                sadInvadersArray[i].Size = new Size(60, 50);
+                sadInvadersArray[i].Image = Space.Properties.Resources.sadFace;
+                sadInvadersArray[i].Left = 10;
+                sadInvadersArray[i].Top = -160;
+                sadInvadersArray[i].Tag = "sadInvaders";
+                sadInvadersArray[i].Left = Left;
+                sadInvadersArray[i].SizeMode = PictureBoxSizeMode.StretchImage;
+                this.Controls.Add(sadInvadersArray[i]);
+                Left = Left + 75;
 
             }
 
@@ -193,7 +252,7 @@ namespace Space_Invaders_Style_Game_MOO_ICT
             isGameOver = false;
 
             enemyBulletTimer = 300;
-            enemySpeed = 5;
+            enemySpeed = 1;
             shooting = false;
 
             makeInvaders();
@@ -273,3 +332,28 @@ namespace Space_Invaders_Style_Game_MOO_ICT
 
     }
 }
+
+
+//private void makeInvaders()
+//{
+
+//    sadInvadersArray = new PictureBox[5];
+
+//    int Top = 0;
+
+//    for (int i = 0; i < sadInvadersArray.Length; i++)
+//    {
+//        sadInvadersArray[i] = new PictureBox();
+//        sadInvadersArray[i].Size = new Size(60, 50);
+//        sadInvadersArray[i].Image = Space.Properties.Resources.sadFace;
+//        sadInvadersArray[i].Left = 10;
+//        sadInvadersArray[i].Tag = "sadInvaders";
+//        sadInvadersArray[i].Top = Top;
+//        sadInvadersArray[i].SizeMode = PictureBoxSizeMode.StretchImage;
+//        this.Controls.Add(sadInvadersArray[i]);
+//        Top = Top - 80;
+
+//    }
+
+
+//}

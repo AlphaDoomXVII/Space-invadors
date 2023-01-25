@@ -1,4 +1,4 @@
-﻿namespace Space_Invaders_Style_Game_MOO_ICT
+﻿namespace Space
 {
     partial class Form2
     {
